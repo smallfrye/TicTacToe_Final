@@ -1,0 +1,125 @@
+def show_state(state):
+    print state[0],state[1],state[2]
+    print state[3],state[4],state[5]
+    print state[6],state[7],state[8]
+    
+# 0 | 1 | 2
+#---+---+---
+# 3 | 4 | 5
+#---+---+---
+# 6 | 7 | 8
+
+def win_status(state,player):
+    if state[0]==letter[player-1] and state[1]==letter[player-1] and state[2]==letter[player-1]:
+            return 'win'
+    if state[3]==letter[player-1] and state[4]==letter[player-1] and state[5]==letter[player-1]:
+            return 'win'
+    if state[6]==letter[player-1] and state[7]==letter[player-1] and state[8]==letter[player-1]:
+            return 'win'
+    if state[0]==letter[player-1] and state[3]==letter[player-1] and state[6]==letter[player-1]:
+            return 'win'
+    if state[1]==letter[player-1] and state[4]==letter[player-1] and state[7]==letter[player-1]:
+            return 'win'
+    if state[2]==letter[player-1] and state[5]==letter[player-1] and state[8]==letter[player-1]:
+            return 'win'
+    if state[0]==letter[player-1] and state[4]==letter[player-1] and state[8]==letter[player-1]:
+            return 'win'
+    if state[2]==letter[player-1] and state[4]==letter[player-1] and state[6]==letter[player-1]:
+            return 'win'
+    
+    for position in range(9):
+        if state[position]==0:
+            return
+        
+    return 'Statemate!'
+
+# set player to 1
+player = 1
+
+# set up player 1 and 2 as X or O
+player_positions = ['X','O']
+player1_choice = []
+player2_choice = []
+
+# ask player 1 to pick to be X or O
+print "Player ", player
+for choice in player_positions:
+    if raw_input("Would you like to be X's or O's? ") == player_positions[0]:
+        player1_choice.append('X')
+        print "Player 1 chose: ",player1_choice[0]
+        player2_choice.append('O')
+        print "Player 2 assigned: ",player2_choice[0]
+        print "Let's play!"
+    else: 
+        player1_choice.append('O')
+        print "Player 1 chose: ",player1_choice[0]
+        player2_choice.append('X')
+        print "Player 2 assigned: ",player2_choice[0]
+        print "Let's play!"
+    if player1_choice[0] == 'X':
+        letter = ['X','O']
+    else:
+        letter = ['O','X']
+    break
+
+# set the initial state
+state = [0,0,0,0,0,0,0,0,0] # board, 0= empty, 1=X, 2=O
+
+# 0 | 1 | 2
+#---+---+---
+# 3 | 4 | 5
+#---+---+---
+# 6 | 7 | 8
+
+show_state(state)
+
+while True:
+    print "Here is a helpful board key: "
+    
+    print '''
+
+     0 | 1 | 2
+    ---+---+---
+     3 | 4 | 5
+    ---+---+---
+     6 | 7 | 8
+     
+     '''
+    
+    # get valid move
+    print "Player ",player
+    while True:
+        move = input("What is your move? ")
+        valid_moves=[]
+        for position in range(9):
+            if state[position] == 0:
+                valid_moves.append(position)
+        if move in valid_moves:
+            break
+        print "Illegal move."
+        
+    # update the state
+    state[move]=letter[player -1] 
+    
+    # show the state
+    show_state(state)
+    
+    # check win status - win, lose, statemate
+    status = win_status(state,player)
+    if status == 'win':
+        print "Player ",player," wins!"
+        break
+    if status == 'lose':
+        print "Player ",player," loses!"
+        break
+    if status == 'statemate':
+        print "Stalemate!"
+        break
+    
+    # switch players 2-->1, 1-->2 go back to the valid move line
+    if player == 1:
+        player=2
+    else:
+        player=1
+
+print "Game is over."
